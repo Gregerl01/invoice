@@ -533,10 +533,14 @@ textarea:focus {
     display: none !important;
   }
 
-  /* Page setup */
+  /* margin: 0 forces browsers to hide the default header/footer (URL, date, page #) */
   @page {
     size: letter;
-    margin: 0.4in;
+    margin: 0;
+  }
+
+  .invoice-page {
+    padding: 0.4in 0.5in 0.3in;
   }
 }
 
