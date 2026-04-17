@@ -1,0 +1,564 @@
+/* ==========================================================
+   INVOICE STYLES
+   Replicates the Sierra Pacific invoice layout.
+   All measurements tuned to match the scanned original.
+   ========================================================== */
+
+/* ---------- Reset & Base ---------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  line-height: 1.3;
+  color: #000;
+  background: #e8e8e8;
+  padding: 20px;
+}
+
+/* ---------- Controls Bar (non-print) ---------- */
+.invoice-controls {
+  max-width: 900px;
+  margin: 0 auto 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.invoice-controls button {
+  padding: 6px 14px;
+  font-size: 12px;
+  border: 1px solid #555;
+  background: #fff;
+  cursor: pointer;
+  border-radius: 3px;
+  font-family: inherit;
+}
+
+.invoice-controls button:hover {
+  background: #f0f0f0;
+}
+
+.invoice-controls .btn-danger {
+  color: #b00;
+  border-color: #b00;
+}
+
+.invoice-controls .btn-danger:hover {
+  background: #fdd;
+}
+
+/* ---------- Invoice Page ---------- */
+.invoice-page {
+  max-width: 900px;
+  margin: 0 auto;
+  background: #fff;
+  padding: 24px 30px 30px;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ---------- Watermark ---------- */
+.watermark {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-35deg);
+  font-size: 120px;
+  font-weight: bold;
+  color: rgba(200, 0, 0, 0.08);
+  letter-spacing: 20px;
+  pointer-events: none;
+  z-index: 10;
+  user-select: none;
+}
+
+.watermark.visible {
+  display: block;
+}
+
+/* ---------- Editable Fields (global) ---------- */
+/* Inputs blend into the document; highlight on focus */
+input[type="text"],
+textarea {
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  padding: 1px 2px;
+  width: 100%;
+  outline: none;
+}
+
+input[type="text"]:hover,
+textarea:hover {
+  background: rgba(0, 100, 255, 0.03);
+}
+
+input[type="text"]:focus,
+textarea:focus {
+  background: rgba(0, 100, 255, 0.07);
+  outline: 1px solid rgba(0, 100, 255, 0.25);
+}
+
+[contenteditable="true"]:hover {
+  background: rgba(0, 100, 255, 0.03);
+}
+
+[contenteditable="true"]:focus {
+  background: rgba(0, 100, 255, 0.07);
+  outline: 1px solid rgba(0, 100, 255, 0.25);
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.header {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+/* --- Header Left: Logo & Company --- */
+.header-left {
+  flex: 0 0 200px;
+}
+
+.logo-placeholder {
+  margin-bottom: 2px;
+}
+
+.logo-img {
+  max-width: 200px;
+  max-height: 70px;
+  width: auto;
+  height: auto;
+  display: block;
+}
+
+/* --- Header Center: Contact + Certs --- */
+.header-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 2px;
+}
+
+.contact-block {
+  text-align: left;
+  margin-bottom: 4px;
+}
+
+.contact-row {
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+.contact-label {
+  font-weight: normal;
+}
+
+.cert-badges {
+  display: flex;
+  gap: 12px;
+  margin-top: 2px;
+}
+
+.cert-badge {
+  border: 1px solid #999;
+  border-radius: 2px;
+  padding: 3px 6px;
+  text-align: center;
+  font-size: 8px;
+  line-height: 1.3;
+}
+
+.cert-icon {
+  font-weight: bold;
+  font-size: 9px;
+}
+
+.cert-sub {
+  font-size: 7px;
+  letter-spacing: 0.5px;
+}
+
+/* --- Header Right: Invoice Meta Box --- */
+.header-right {
+  flex: 0 0 280px;
+  border: 2px solid #000;
+}
+
+.invoice-title {
+  background: #000;
+  color: #fff;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 3px 0;
+  letter-spacing: 2px;
+}
+
+.invoice-meta-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.invoice-meta-table td {
+  border: 1px solid #000;
+  padding: 1px 5px;
+  vertical-align: top;
+}
+
+.invoice-meta-table .meta-label {
+  font-size: 8px;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 1px 5px 0;
+  line-height: 1.2;
+}
+
+.invoice-meta-table .meta-value {
+  font-size: 12px;
+  padding: 0 5px 2px;
+  font-weight: bold;
+}
+
+.invoice-meta-table .meta-value input {
+  font-weight: bold;
+  font-size: 12px;
+}
+
+/* ============================================================
+   ADDRESS SECTION
+   ============================================================ */
+.address-section {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 8px;
+  border-top: 1px solid #000;
+  padding-top: 8px;
+}
+
+.address-block {
+  flex: 1;
+}
+
+.address-title {
+  font-weight: bold;
+  font-size: 11px;
+  margin-bottom: 2px;
+}
+
+.address-label {
+  font-weight: bold;
+}
+
+.address-field {
+  font-size: 11px;
+  margin-bottom: 1px;
+}
+
+.address-lines {
+  font-size: 11px;
+  line-height: 1.35;
+  min-height: 14px;
+}
+
+/* ============================================================
+   TERMS TABLE
+   ============================================================ */
+.terms-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 0;
+  border: 1px solid #000;
+}
+
+.terms-table th {
+  background: #fff;
+  border: 1px solid #000;
+  padding: 2px 5px;
+  font-size: 9px;
+  font-weight: bold;
+  text-align: left;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.terms-table td {
+  border: 1px solid #000;
+  padding: 2px 5px;
+  font-size: 11px;
+}
+
+.terms-table td input {
+  font-size: 11px;
+}
+
+/* ============================================================
+   LINE ITEMS TABLE
+   ============================================================ */
+.line-items-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #000;
+  margin-bottom: 0;
+}
+
+.line-items-table thead th {
+  background: #fff;
+  border: 1px solid #000;
+  padding: 3px 5px;
+  font-size: 9px;
+  font-weight: bold;
+  text-align: center;
+  text-transform: uppercase;
+  vertical-align: bottom;
+}
+
+/* Column widths */
+.col-item-no   { width: 42px; }
+.col-description { width: auto; }
+.col-tariff    { width: 55px; }
+.col-order     { width: 55px; }
+.col-shipped   { width: 60px; }
+.col-unit      { width: 60px; }
+.col-ext-price { width: 80px; }
+.col-actions   { width: 30px; }
+
+.line-items-table tbody td {
+  border: 1px solid #000;
+  padding: 0;
+  vertical-align: top;
+  font-size: 11px;
+}
+
+/* Line item internal structure */
+.line-item-cell {
+  padding: 3px 5px;
+}
+
+.line-item-main {
+  display: flex;
+  gap: 4px;
+  font-size: 11px;
+  margin-bottom: 1px;
+}
+
+.line-item-main .li-label {
+  font-weight: bold;
+  white-space: nowrap;
+  font-size: 10px;
+}
+
+.line-item-carrier {
+  font-size: 9px;
+  color: #333;
+  margin-bottom: 1px;
+  padding-left: 10px;
+}
+
+.line-item-carrier .li-label {
+  font-weight: bold;
+  font-size: 9px;
+}
+
+.line-item-desc-text {
+  font-size: 9px;
+  color: #333;
+  text-transform: uppercase;
+  padding-left: 10px;
+}
+
+/* Numeric cells */
+.cell-number {
+  text-align: right;
+  padding: 3px 5px;
+}
+
+.cell-number input {
+  text-align: right;
+}
+
+.cell-center {
+  text-align: center;
+  padding: 3px 5px;
+}
+
+.cell-center input {
+  text-align: center;
+}
+
+/* Remove button in line items */
+.line-item-remove {
+  background: none;
+  border: none;
+  color: #c00;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 2px 6px;
+  line-height: 1;
+}
+
+.line-item-remove:hover {
+  color: #f00;
+  background: #fee;
+}
+
+/* ============================================================
+   TOTALS SECTION
+   ============================================================ */
+.totals-section {
+  border: 1px solid #000;
+  border-top: none;
+}
+
+.surcharge-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 8px;
+  border-bottom: 1px solid #000;
+  font-size: 11px;
+}
+
+.surcharge-label {
+  font-style: italic;
+  flex: 1;
+}
+
+.surcharge-value {
+  width: 100px;
+  text-align: right;
+}
+
+.surcharge-value input {
+  text-align: right;
+  font-size: 11px;
+}
+
+.totals-grid {
+  display: flex;
+}
+
+.total-cell {
+  flex: 1;
+  text-align: center;
+  border-right: 1px solid #000;
+  padding: 4px 8px;
+}
+
+.total-cell:last-child {
+  border-right: none;
+}
+
+.total-label {
+  font-weight: bold;
+  font-size: 10px;
+  margin-bottom: 2px;
+}
+
+.total-value {
+  font-size: 12px;
+}
+
+.total-value input {
+  text-align: center;
+  font-size: 12px;
+}
+
+.total-final {
+  font-weight: bold;
+}
+
+.total-final .total-value {
+  font-size: 13px;
+  font-weight: bold;
+}
+
+/* ============================================================
+   PRINT STYLES
+   ============================================================ */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+    padding: 0;
+    margin: 0;
+  }
+
+  .invoice-page {
+    box-shadow: none;
+    padding: 10px 20px 20px;
+    max-width: 100%;
+  }
+
+  /* Hide edit affordances when printing */
+  input[type="text"],
+  textarea {
+    border: none !important;
+    outline: none !important;
+    background: transparent !important;
+  }
+
+  [contenteditable="true"] {
+    outline: none !important;
+    background: transparent !important;
+  }
+
+  .line-item-remove {
+    display: none !important;
+  }
+
+  .col-actions {
+    display: none !important;
+  }
+
+  /* Page setup */
+  @page {
+    size: letter;
+    margin: 0.4in;
+  }
+}
+
+/* ============================================================
+   RESPONSIVE — allow horizontal scroll on small screens
+   ============================================================ */
+@media (max-width: 940px) {
+  body {
+    padding: 10px;
+  }
+
+  .invoice-page {
+    min-width: 860px;
+    overflow-x: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  body {
+    padding: 5px;
+  }
+
+  .invoice-controls {
+    gap: 4px;
+  }
+
+  .invoice-controls button {
+    font-size: 10px;
+    padding: 4px 8px;
+  }
+}

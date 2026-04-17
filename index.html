@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invoice</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="invoice-controls no-print">
+    <button onclick="addLineItem()">+ Add Line Item</button>
+    <button onclick="printInvoice()">Print / Save as PDF</button>
+    <button onclick="exportJSON()">Export JSON</button>
+    <button onclick="importJSON()">Import JSON</button>
+    <button onclick="toggleWatermark()">Toggle Watermark</button>
+    <button onclick="resetInvoice()" class="btn-danger">Reset Invoice</button>
+    <input type="file" id="json-file-input" accept=".json" style="display:none" onchange="handleFileImport(event)">
+  </div>
+
+  <div class="invoice-page" id="invoice-page">
+    <!-- Watermark (hidden by default) -->
+    <div class="watermark" id="watermark">DRAFT</div>
+
+    <!-- ==================== TOP HEADER ==================== -->
+    <div class="header">
+      <!-- Left: Company / Logo -->
+      <div class="header-left">
+        <div class="logo-placeholder" id="logo-area">
+          <img src="logo.webp" alt="Company Logo" class="logo-img">
+        </div>
+      </div>
+
+      <!-- Center: Contact info + Certifications -->
+      <div class="header-center">
+        <div class="contact-block">
+          <div class="contact-row">
+            <span class="contact-label">Phone:</span>
+            <span contenteditable="true" data-field="phone">(310) 608-0693</span>
+          </div>
+          <div class="contact-row">
+            <span class="contact-label">Fax:</span>
+            <span contenteditable="true" data-field="fax">(310) 608-0952</span>
+          </div>
+          <div class="contact-row">
+            <span class="contact-label">E-mail:</span>
+            <span contenteditable="true" data-field="email">sierra@spep.com</span>
+          </div>
+        </div>
+        <div class="cert-badges">
+          <!-- Certification badge placeholders -->
+          <div class="cert-badge" contenteditable="true" data-field="certBadge1">
+            <div class="cert-icon">ESOP 100%</div>
+            <div class="cert-sub">EMPLOYEE-OWNED</div>
+          </div>
+          <div class="cert-badge" contenteditable="true" data-field="certBadge2">
+            <div class="cert-icon">ISO 9001</div>
+            <div class="cert-sub">CERTIFIED</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Invoice summary box -->
+      <div class="header-right">
+        <div class="invoice-title">INVOICE</div>
+        <table class="invoice-meta-table">
+          <tr>
+            <td class="meta-label">NUMBER</td>
+            <td class="meta-label">CUSTOMER NUMBER</td>
+          </tr>
+          <tr>
+            <td class="meta-value"><input type="text" data-field="invoiceNumber" value="941187"></td>
+            <td class="meta-value"><input type="text" data-field="customerNumber" value="4096577"></td>
+          </tr>
+          <tr>
+            <td class="meta-label">DATE</td>
+            <td class="meta-label">PAGE</td>
+          </tr>
+          <tr>
+            <td class="meta-value"><input type="text" data-field="invoiceDate" value="13-APR-26"></td>
+            <td class="meta-value"><input type="text" data-field="page" value="1 of 2"></td>
+          </tr>
+          <tr>
+            <td colspan="2" class="meta-label">P.O. NUMBER</td>
+          </tr>
+          <tr>
+            <td colspan="2" class="meta-value"><input type="text" data-field="poNumber" value="PO2723"></td>
+          </tr>
+          <tr>
+            <td colspan="2" class="meta-label">SHIP VIA (REF NUMBER)</td>
+          </tr>
+          <tr>
+            <td colspan="2" class="meta-value"><input type="text" data-field="shipVia" value="XPO Logistic (0)"></td>
+          </tr>
+          <tr>
+            <td class="meta-label">ORDER #</td>
+            <td class="meta-label">DELIVERY #</td>
+          </tr>
+          <tr>
+            <td class="meta-value"><input type="text" data-field="orderNumber" value="716482"></td>
+            <td class="meta-value"><input type="text" data-field="deliveryNumber" value="See Below"></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- ==================== ADDRESS SECTION ==================== -->
+    <div class="address-section">
+      <div class="address-block bill-to">
+        <div class="address-title">BILL TO:</div>
+        <div class="address-field">
+          <span class="address-label">Attn:</span>
+          <span contenteditable="true" data-field="billToAttn">Account Payable</span>
+        </div>
+        <div contenteditable="true" class="address-lines" data-field="billToCompany">MAQ DRAQ SA DE CV</div>
+        <div contenteditable="true" class="address-lines" data-field="billToAddress1">CIPRESES 100, JURICA PINAR</div>
+        <div contenteditable="true" class="address-lines" data-field="billToAddress2">QUERETARO, QUERETARO 76100</div>
+        <div contenteditable="true" class="address-lines" data-field="billToCountry">MX</div>
+      </div>
+      <div class="address-block ship-to">
+        <div class="address-title">SHIP TO:</div>
+        <div contenteditable="true" class="address-lines" data-field="shipToName">ULISES RODRIGUEZ</div>
+        <div contenteditable="true" class="address-lines" data-field="shipToCompany">MAQ DRAQ SA DE CV</div>
+        <div contenteditable="true" class="address-lines" data-field="shipToAddress1">GRUPO PADILLA - INTERAMERICA</div>
+        <div contenteditable="true" class="address-lines" data-field="shipToAddress2">DISTRIBUTION PARK</div>
+        <div contenteditable="true" class="address-lines" data-field="shipToAddress3">14215 TRANSPORTATION AVE</div>
+        <div contenteditable="true" class="address-lines" data-field="shipToCityStateZip">Laredo, TX 78045</div>
+        <div contenteditable="true" class="address-lines" data-field="shipToCountry">US</div>
+      </div>
+    </div>
+
+    <!-- ==================== TERMS / INFO ROW ==================== -->
+    <table class="terms-table">
+      <thead>
+        <tr>
+          <th>PAYMENT TERMS</th>
+          <th>PAYMENT DUE DATE</th>
+          <th>SHIP DATE</th>
+          <th>INCOTERM</th>
+          <th>SALESPERSON</th>
+          <th>Customer Contact</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="text" data-field="paymentTerms" value="CIA"></td>
+          <td><input type="text" data-field="paymentDueDate" value="13-APR-26"></td>
+          <td><input type="text" data-field="shipDate" value="13-APR-26"></td>
+          <td><input type="text" data-field="incoterm" value="FOB - Origin"></td>
+          <td><input type="text" data-field="salesperson" value="Lorena Rendon"></td>
+          <td><input type="text" data-field="customerContact" value="ULISES RODRIGUEZ"></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- ==================== LINE ITEMS TABLE ==================== -->
+    <table class="line-items-table" id="line-items-table">
+      <thead>
+        <tr>
+          <th class="col-item-no">ITEM<br>NO</th>
+          <th class="col-description">DESCRIPTION</th>
+          <th class="col-tariff">TARIFF%</th>
+          <th class="col-order">ORDER</th>
+          <th class="col-shipped">SHIPPED</th>
+          <th class="col-unit">UNIT</th>
+          <th class="col-ext-price">EXT PRICE</th>
+          <th class="col-actions no-print"></th>
+        </tr>
+      </thead>
+      <tbody id="line-items-body">
+        <!-- Line items inserted by JS -->
+      </tbody>
+    </table>
+
+    <!-- ==================== TOTALS SECTION ==================== -->
+    <div class="totals-section">
+      <div class="surcharge-row">
+        <span class="surcharge-label" contenteditable="true" data-field="surchargeLabel">Import Tariff Surcharge</span>
+        <span class="surcharge-value">
+          <input type="text" class="total-input" id="surcharge" data-field="surcharge" value="1,840.00" onchange="recalcTotals()">
+        </span>
+      </div>
+      <div class="totals-grid">
+        <div class="total-cell">
+          <div class="total-label">Subtotal</div>
+          <div class="total-value" id="subtotal">8350.66</div>
+        </div>
+        <div class="total-cell">
+          <div class="total-label">Tax</div>
+          <div class="total-value">
+            <input type="text" class="total-input" id="tax" data-field="tax" value="0.00" onchange="recalcTotals()">
+          </div>
+        </div>
+        <div class="total-cell">
+          <div class="total-label">Freight</div>
+          <div class="total-value">
+            <input type="text" class="total-input" id="freight" data-field="freight" value="0.00" onchange="recalcTotals()">
+          </div>
+        </div>
+        <div class="total-cell total-final">
+          <div class="total-label">Total</div>
+          <div class="total-value" id="grand-total">$8,350.66</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /invoice-page -->
+
+  <script src="script.js"></script>
+</body>
+</html>
