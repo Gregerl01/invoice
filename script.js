@@ -19,7 +19,7 @@ const DEFAULT_LINE_ITEMS = [
     itemNo: "1",
     spepPN: "895",
     custPN: "N/A",
-    carrier: "XPO Logistic",
+    carrier: "FedEx",
     waybill: "704613792",
     deliveryNum: "101234080",
     description: "STEEL TIE RING, BLUE ZINC PLATED, 6000 LB CAPACITY",
@@ -28,34 +28,6 @@ const DEFAULT_LINE_ITEMS = [
     shipped: "1000",
     unit: "5.92",
     extPrice: "5,920.00"
-  },
-  {
-    itemNo: "2",
-    spepPN: "FREIGHT",
-    custPN: "N/A",
-    carrier: "XPO Logistic",
-    waybill: "N/A",
-    deliveryNum: "N/A",
-    description: "FREIGHT CHARGES",
-    tariff: "0",
-    order: "1",
-    shipped: "1",
-    unit: "560.66",
-    extPrice: "560.66"
-  },
-  {
-    itemNo: "3",
-    spepPN: "WIRE FEE",
-    custPN: "N/A",
-    carrier: "XPO Logistic",
-    waybill: "N/A",
-    deliveryNum: "N/A",
-    description: "CHARGES TO COVER WIRE FEE",
-    tariff: "0",
-    order: "1",
-    shipped: "1",
-    unit: "30.00",
-    extPrice: "30.00"
   }
 ];
 

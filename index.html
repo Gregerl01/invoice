@@ -28,6 +28,7 @@
         <div class="logo-placeholder" id="logo-area">
           <img src="logo.webp" alt="Company Logo" class="logo-img">
         </div>
+        <div class="company-address" contenteditable="true" data-field="companyAddress">5600 Kearny Villa Road<br>San Diego, CA 92123</div>
       </div>
 
       <!-- Center: Contact info + Certifications -->
@@ -35,26 +36,11 @@
         <div class="contact-block">
           <div class="contact-row">
             <span class="contact-label">Phone:</span>
-            <span contenteditable="true" data-field="phone">(310) 608-0693</span>
-          </div>
-          <div class="contact-row">
-            <span class="contact-label">Fax:</span>
-            <span contenteditable="true" data-field="fax">(310) 608-0952</span>
+            <span contenteditable="true" data-field="phone">619.746.9249</span>
           </div>
           <div class="contact-row">
             <span class="contact-label">E-mail:</span>
-            <span contenteditable="true" data-field="email">sierra@spep.com</span>
-          </div>
-        </div>
-        <div class="cert-badges">
-          <!-- Certification badge placeholders -->
-          <div class="cert-badge" contenteditable="true" data-field="certBadge1">
-            <div class="cert-icon">ESOP 100%</div>
-            <div class="cert-sub">EMPLOYEE-OWNED</div>
-          </div>
-          <div class="cert-badge" contenteditable="true" data-field="certBadge2">
-            <div class="cert-icon">ISO 9001</div>
-            <div class="cert-sub">CERTIFIED</div>
+            <span contenteditable="true" data-field="email">Info@rhinosd.com</span>
           </div>
         </div>
       </div>
@@ -89,7 +75,7 @@
             <td colspan="2" class="meta-label">SHIP VIA (REF NUMBER)</td>
           </tr>
           <tr>
-            <td colspan="2" class="meta-value"><input type="text" data-field="shipVia" value="XPO Logistic (0)"></td>
+            <td colspan="2" class="meta-value"><input type="text" data-field="shipVia" value="FedEx"></td>
           </tr>
           <tr>
             <td class="meta-label">ORDER #</td>
@@ -146,7 +132,7 @@
           <td><input type="text" data-field="paymentDueDate" value="13-APR-26"></td>
           <td><input type="text" data-field="shipDate" value="13-APR-26"></td>
           <td><input type="text" data-field="incoterm" value="FOB - Origin"></td>
-          <td><input type="text" data-field="salesperson" value="Lorena Rendon"></td>
+          <td><input type="text" data-field="salesperson" value="Edon Moyal"></td>
           <td><input type="text" data-field="customerContact" value="ULISES RODRIGUEZ"></td>
         </tr>
       </tbody>
@@ -176,7 +162,7 @@
       <div class="surcharge-row">
         <span class="surcharge-label" contenteditable="true" data-field="surchargeLabel">Import Tariff Surcharge</span>
         <span class="surcharge-value">
-          <input type="text" class="total-input" id="surcharge" data-field="surcharge" value="1,840.00" onchange="recalcTotals()">
+          <input type="text" class="total-input" id="surcharge" data-field="surcharge" value="0.00" onchange="recalcTotals()">
         </span>
       </div>
       <div class="totals-grid">

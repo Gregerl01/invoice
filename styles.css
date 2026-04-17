@@ -144,6 +144,12 @@ textarea:focus {
   display: block;
 }
 
+.company-address {
+  font-size: 10px;
+  line-height: 1.4;
+  margin-top: 3px;
+}
+
 /* --- Header Center: Contact + Certs --- */
 .header-center {
   flex: 1;
